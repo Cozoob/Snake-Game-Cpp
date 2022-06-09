@@ -29,6 +29,8 @@ private:
     void updateGame();
 
     void drawGame();
+
+    void drawInstructions();
 };
 
 
