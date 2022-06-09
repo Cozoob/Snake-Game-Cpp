@@ -156,6 +156,8 @@ void App::drawGame() {
         DrawRectangleV(food.getPosition(), food.getSize(), food.getColor());
 
         // TODO pause game
+    } else {
+        this->drawGameOver();
     }
 
     EndDrawing();
@@ -164,6 +166,16 @@ void App::drawGame() {
 
 void App::run() {
     InitWindow(screenWidth, screenHeight, "Snake Game");
+
+    // initial window
+    while(!IsKeyPressed(KEY_ENTER)){
+        this->drawInitialMessage();
+    }
+
+    // instructions how to play
+    while(!IsKeyPressed(KEY_ENTER)){
+        this->drawGameOver();
+    }
 
     // init game
     this->initGame();
@@ -178,15 +190,27 @@ void App::run() {
         this->drawGame();
     }
 
+
     CloseWindow();
 }
 
-void App::drawInstructions() {
+void App::drawGameOver(){
     BeginDrawing();
 
         ClearBackground(RAYWHITE);
 
-        DrawText("Instrucions!", 190, 200, 20, LIGHTGRAY);
+        DrawText("GAME OVER! [ENTER] - to play again", 190, 200, 20, LIGHTGRAY);
+
+    EndDrawing();
+}
+
+void App::drawInitialMessage() {
+    BeginDrawing();
+
+        ClearBackground(RAYWHITE);
+        DrawText("Welcome to Snake Game made by Marcin Kozub!", 180, 160, 20, LIGHTGRAY);
+        DrawText("Use arrows to move snake, P - Pause game, ESP - exit", 130, 240, 20, LIGHTGRAY);
+        DrawText("Click [ENTER] to start the game!", 220, 280, 20, LIGHTGRAY);
 
     EndDrawing();
 }

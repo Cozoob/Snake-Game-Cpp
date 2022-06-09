@@ -30,7 +30,9 @@ private:
 
     void drawGame();
 
-    void drawInstructions();
+    void drawGameOver();
+
+    void drawInitialMessage();
 };
 
 
