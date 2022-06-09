@@ -11,7 +11,7 @@ class App {
 private:
     int screenWidth;
     int screenHeight;
-    Snake snake;
+    Snake snake[SNAKE_LENGTH];
     Food food;
     int framesCounter;
     bool isGameOver;

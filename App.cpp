@@ -9,7 +9,25 @@ void App::initGame() {
     this->offset.x = screenWidth % SQUARE_SIZE;
     this->offset.y = screenHeight % SQUARE_SIZE;
 
+    for(int i = 0; i < SNAKE_LENGTH; i++){
+        snake[i].setPosition({offset.x / 2, offset.y / 2});
+        snake[i].setSize({SQUARE_SIZE, SQUARE_SIZE});
+        snake[i].setSpeed({SQUARE_SIZE, 0});
 
+        if(i == 0){
+            snake[i].setColor(DARKPURPLE);
+        } else {
+            snake[i].setColor(PURPLE);
+        }
+    }
+    // TODO CO Z TYM ???
+//    for(int i = 0; i < SNAKE_LENGTH; i++){
+//        snake
+//    }
+
+    food.setSize({SQUARE_SIZE, SQUARE_SIZE});
+    food.setColor(SKYBLUE);
+    food.setIsActive(false);
 }
 
 void App::updateGame() {
@@ -17,6 +35,24 @@ void App::updateGame() {
 }
 
 void App::drawGame() {
+    BeginDrawing();
+
+    ClearBackground(RAYWHITE);
+
+    if(!this->isGameOver){
+        // draw grid lines
+        for(int i = 0; i < screenWidth / SQUARE_SIZE + 1; i++){
+            DrawLineV({SQUARE_SIZE * i + offset.x / 2, offset.y / 2},
+                      {SQUARE_SIZE * i + offset.x/2, screenHeight - offset.y/2}, LIGHTGRAY);
+        }
+
+        for(int i = 0; i < screenWidth / SQUARE_SIZE + 1; i++){
+            DrawLineV({ offset.x / 2, SQUARE_SIZE * i + offset.y / 2},
+                      {screenWidth - offset.x/2,  SQUARE_SIZE * i + offset.y/2}, LIGHTGRAY);
+        }
+    }
+
+    EndDrawing();
 
 }
 

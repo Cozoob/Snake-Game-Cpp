@@ -31,6 +31,22 @@ public:
         this->allowMove = allowed;
     }
 
+    void setPosition(Vector2 vector2){
+        this->position = vector2;
+    }
+
+    void setSize(Vector2 vector2){
+        this->size = vector2;
+    }
+
+    void setSpeed(Vector2 vector2){
+        this->speed = vector2;
+    }
+
+    void setColor(Color color){
+        this->color = color;
+    }
+
     // gettery
     Vector2 getPosition(){
         return this->position;

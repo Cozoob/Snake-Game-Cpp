@@ -16,6 +16,18 @@ public:
     Food(Vector2 position, Vector2 size, bool isActive, Color color): position{position}, size{size},
     isActive{isActive}, color{color} {}
 
+    // settery
+    void setSize(Vector2 vector2){
+        this->size = vector2;
+    }
+
+    void setColor(Color color){
+        this->color = color;
+    }
+
+    void setIsActive(bool active){
+        this->isActive = active;
+    }
 
     // gettery
     Vector2 getPosition(){
