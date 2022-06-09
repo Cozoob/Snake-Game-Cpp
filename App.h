@@ -17,6 +17,7 @@ private:
     bool isGameOver;
     bool pause;
     Vector2 offset = {0};
+    Vector2 snakePosition[SNAKE_LENGTH] = {0};
 public:
     App(): screenHeight(450), screenWidth(800), snake(), food(), framesCounter(), isGameOver(), pause() {}
 

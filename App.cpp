@@ -20,11 +20,12 @@ void App::initGame() {
             snake[i].setColor(PURPLE);
         }
     }
-    // TODO CO Z TYM ???
-//    for(int i = 0; i < SNAKE_LENGTH; i++){
-//        snake
-//    }
 
+    for(auto & i : snakePosition){
+        i = {0, 0};
+    }
+
+    food.setPosition({offset.x/2, offset.y/2});
     food.setSize({SQUARE_SIZE, SQUARE_SIZE});
     food.setColor(SKYBLUE);
     food.setIsActive(false);
@@ -50,6 +51,16 @@ void App::drawGame() {
             DrawLineV({ offset.x / 2, SQUARE_SIZE * i + offset.y / 2},
                       {screenWidth - offset.x/2,  SQUARE_SIZE * i + offset.y/2}, LIGHTGRAY);
         }
+
+        // draw snake
+        for(int i = 0; i < snake[0].getCounterTail(); i++){
+            DrawRectangleV(snake[i].getPosition(), snake[i].getSize(), snake[i].getColor());
+        }
+
+        // draw food
+        DrawRectangleV(food.getPosition(), food.getSize(), food.getColor());
+
+        // TODO pause game
     }
 
     EndDrawing();

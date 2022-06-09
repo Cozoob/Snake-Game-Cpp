@@ -67,6 +67,10 @@ public:
     bool isAllowedToMove(){
         return this->allowMove;
     }
+
+    int getCounterTail(){
+        return this->counterTail;
+    }
 };
 
 

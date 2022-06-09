@@ -17,6 +17,10 @@ public:
     isActive{isActive}, color{color} {}
 
     // settery
+    void setPosition(Vector2 pos){
+        this->position = pos;
+    }
+
     void setSize(Vector2 vector2){
         this->size = vector2;
     }
@@ -36,6 +40,10 @@ public:
 
     Vector2 getSize(){
         return this->size;
+    }
+
+    Color getColor(){
+        return this->color;
     }
 
     bool getIsActive(){
