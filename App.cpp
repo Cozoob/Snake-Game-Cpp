@@ -82,11 +82,27 @@ void App::updateGame() {
             }
 
             // wall behaviour
-            if(((snake[0].getPosition().x > screenWidth - offset.x)) ||
-                    (snake[0].getPosition().y > screenHeight - offset.y) ||
-                    (snake[0].getPosition().x < 0) || snake[0].getPosition().y < 0){
-                isGameOver = true;
+            float headX = snake[0].getPosition().x;
+            float headY = snake[0].getPosition().y;
+
+            if(headX > screenWidth - offset.x){
+                std::cout << "HERE!" << std::endl;
+                headX = offset.x / 2;
             }
+
+            if(headY > screenHeight - offset.y){
+                headY = offset.y / 2;
+            }
+
+            if(headX < 0){
+                headX = screenWidth - offset.x;
+            }
+
+            if(headY < 0){
+                headY = screenHeight - offset.y;
+            }
+
+            snake[0].setPosition({headX, headY});
 
             // collision with yourself
             for(int i = 1; i < snake[0].getCounterTail(); i++){
