@@ -19,5 +19,5 @@ endif()
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Snake_Game_Cpp main.cpp)
+add_executable(Snake_Game_Cpp main.cpp Snake.cpp Snake.h Food.cpp Food.h App.cpp App.h)
 target_link_libraries(${PROJECT_NAME} raylib)
