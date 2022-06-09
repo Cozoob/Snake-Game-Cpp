@@ -3,6 +3,8 @@
 #ifndef SNAKE_GAME_CPP_SNAKE_H
 #define SNAKE_GAME_CPP_SNAKE_H
 
+#define SNAKE_LENGTH 256
+
 #include "raylib.h"
 
 class Snake {
@@ -11,13 +13,23 @@ private:
     Vector2 size;
     Vector2 speed;
     Color color;
+    int counterTail;
+    bool allowMove;
 public:
     Snake() : position({0,0}), size({0,0}), speed({0,0}),
-    color({'0', '0', '0', '0'}) {}
+    color({'0', '0', '0', '0'}), counterTail(1), allowMove(false) {}
 
     Snake(Vector2 position, Vector2 size, Vector2 speed, Color color): position{position}, size{size},
-    speed{speed}, color{color} {}
+    speed{speed}, color{color}, counterTail(1), allowMove(false) {}
 
+    // settery
+    void setCounterTail(int counter){
+        this->counterTail = counter;
+    }
+
+    void setAllowMove(bool allowed){
+        this->allowMove = allowed;
+    }
 
     // gettery
     Vector2 getPosition(){
@@ -34,6 +46,10 @@ public:
 
     Color getColor(){
         return this->color;
+    }
+
+    bool isAllowedToMove(){
+        return this->allowMove;
     }
 };
 

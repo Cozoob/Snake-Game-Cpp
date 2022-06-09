@@ -1,13 +1,11 @@
 #include <iostream>
 
-#include "Snake.h"
-#include "Food.h"
+#include "App.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-
-    Snake snake;
-    Food food;
+    std::cout << "Snake game is running! Made by Marcin Kozub." << std::endl;
+    App app;
+    app.run();
 
     return 0;
 }
