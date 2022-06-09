@@ -1,6 +1,3 @@
-
-#include <unistd.h>
-#include <iostream>
 #include "App.h"
 
 void App::initGame() {
@@ -34,6 +31,12 @@ void App::initGame() {
     food.setSize({SQUARE_SIZE, SQUARE_SIZE});
     food.setColor(SKYBLUE);
     food.setIsActive(false);
+
+    for(int i = 0; i < NUM_POISON; i++){
+        poison[i].setPosition({offset.x / 2, offset.y / 2});
+        poison[i].setSize({SQUARE_SIZE, SQUARE_SIZE});
+        poison[i].setIsActive(false);
+    }
 }
 
 void App::updateGame() {
@@ -43,7 +46,7 @@ void App::updateGame() {
         }
 
         if(!this->pause){
-            // plater control
+            // player control
 
             if(IsKeyPressed(KEY_RIGHT) && (snake[0].getSpeed().x == 0) && snake[0].isAllowedToMove()){
                 snake[0].setSpeed({SQUARE_SIZE, 0});
@@ -86,7 +89,6 @@ void App::updateGame() {
             float headY = snake[0].getPosition().y;
 
             if(headX > screenWidth - offset.x){
-                std::cout << "HERE!" << std::endl;
                 headX = offset.x / 2;
             }
 
@@ -115,25 +117,67 @@ void App::updateGame() {
             // food position calc
             if(!food.getIsActive()){
                 food.setIsActive(true);
-                food.setPosition({GetRandomValue(0, screenWidth / SQUARE_SIZE - 1) * SQUARE_SIZE + offset.x / 2,
-                                  GetRandomValue(0, (screenHeight/SQUARE_SIZE) - 1) * SQUARE_SIZE + offset.y / 2});
+                food.setPosition(getRandomPosition());
 
                 for(int i = 0; i < snake[0].getCounterTail(); i++){
-                    while(food.getPosition().x == snake[i].getPosition().x && food.getPosition().y == snake[i].getPosition().y){
-                        food.setPosition({GetRandomValue(0, screenWidth / SQUARE_SIZE - 1) * SQUARE_SIZE + offset.x / 2,
-                                          GetRandomValue(0, (screenHeight/SQUARE_SIZE) - 1) * SQUARE_SIZE + offset.y / 2});
+                    while(food.getPosition().x == snake[i].getPosition().x &&
+                    food.getPosition().y == snake[i].getPosition().y){
+                        food.setPosition(getRandomPosition());
                         i = 0;
                     }
                 }
             }
 
-            // collision
-            if(snake[0].getPosition().x < (food.getPosition().x + food.getSize().x) && (snake[0].getPosition().x + snake[0].getSize().x) > food.getPosition().x &&
-                    snake[0].getPosition().y < (food.getPosition().y + food.getSize().y) && (snake[0].getPosition().y + snake[0].getSize().y) > food.getPosition().y){
+            // poison position calc
+            for(int i = 0; i < NUM_POISON; i++){
+                bool changePosition = false;
+                if(foodCounter == 5){
+                    foodCounter = 0;
+                    changePosition = true;
+                }
+
+                if(!poison[i].getIsActive() || changePosition){
+                    poison[i].setIsActive(true);
+                    poison[i].setPosition(getRandomPosition());
+
+                    for(int j = 0; j < snake[0].getCounterTail(); j++){
+                        while(poison[i].getPosition().x == snake[j].getPosition().x &&
+                        poison[i].getPosition().y == snake[j].getPosition().y){
+                            poison[i].setPosition(getRandomPosition());
+                            i = 0;
+                        }
+                    }
+                }
+            }
+
+            // food collision
+            if(snake[0].getPosition().x < (food.getPosition().x + food.getSize().x) &&
+                    (snake[0].getPosition().x + snake[0].getSize().x) > food.getPosition().x &&
+                    snake[0].getPosition().y < (food.getPosition().y + food.getSize().y) &&
+                            (snake[0].getPosition().y + snake[0].getSize().y) > food.getPosition().y){
                 int tail = snake[0].getCounterTail();
                 snake[tail].getPosition() = snakePosition[tail - 1];
                 snake[0].setCounterTail(tail + 1);
                 food.setIsActive(false);
+                foodCounter++;
+            }
+
+            // poison collision
+            for(int i = 0; i < NUM_POISON; i++){
+                if(snake[0].getPosition().x < (poison[i].getPosition().x + poison[i].getSize().x) &&
+                        (snake[0].getPosition().x + snake[0].getSize().x) > poison[i].getPosition().x &&
+                        snake[0].getPosition().y < (poison[i].getPosition().y + poison[i].getSize().y) &&
+                        (snake[0].getPosition().y + snake[0].getSize().y) > poison[i].getPosition().y){
+                    int tail = snake[0].getCounterTail();
+                    if(tail == 1){
+                        isGameOver = true;
+                        break;
+                    }
+
+                    snake[tail].getPosition() = snakePosition[tail + 1];
+                    snake[0].setCounterTail(tail - 1);
+                    poison[i].setIsActive(false);
+                }
             }
 
             framesCounter++;
@@ -171,13 +215,16 @@ void App::drawGame() {
         // draw food
         DrawRectangleV(food.getPosition(), food.getSize(), food.getColor());
 
-        // TODO pause game
+        // draw poisons
+        for(int i = 0; i < NUM_POISON; i++){
+            DrawRectangleV(poison[i].getPosition(), poison[i].getSize(), poison[i].getColor());
+        }
+
     } else {
         this->drawGameOver();
     }
 
     EndDrawing();
-
 }
 
 void App::run() {
@@ -229,5 +276,10 @@ void App::drawInitialMessage() {
         DrawText("Click [ENTER] to start the game!", 220, 280, 20, LIGHTGRAY);
 
     EndDrawing();
+}
+
+Vector2 App::getRandomPosition() {
+    return Vector2({GetRandomValue(0, screenWidth / SQUARE_SIZE - 1) * SQUARE_SIZE + offset.x / 2,
+                    GetRandomValue(0, (screenHeight/SQUARE_SIZE) - 1) * SQUARE_SIZE + offset.y / 2});
 }
 
