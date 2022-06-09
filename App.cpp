@@ -156,7 +156,7 @@ void App::updateGame() {
                     snake[0].getPosition().y < (food.getPosition().y + food.getSize().y) &&
                             (snake[0].getPosition().y + snake[0].getSize().y) > food.getPosition().y){
                 int tail = snake[0].getCounterTail();
-                snake[tail].getPosition() = snakePosition[tail - 1];
+                snake[tail].setPosition(snakePosition[tail - 1]);
                 snake[0].setCounterTail(tail + 1);
                 food.setIsActive(false);
                 foodCounter++;
@@ -174,7 +174,7 @@ void App::updateGame() {
                         break;
                     }
 
-                    snake[tail].getPosition() = snakePosition[tail + 1];
+                    snake[tail].setPosition(snakePosition[tail + 1]);
                     snake[0].setCounterTail(tail - 1);
                     poison[i].setIsActive(false);
                 }
